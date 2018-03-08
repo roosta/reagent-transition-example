@@ -28,7 +28,7 @@
              :css-dirs ["public/css"]}
 
   :cljsbuild {:builds {:app
-                       {:source-paths ["src" "env/dev/cljs"]
+                       {:source-paths ["src"]
                         :compiler
                         {:main "transitions-example.dev"
                          :output-to "public/js/app.js"
