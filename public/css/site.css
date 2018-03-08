@@ -1,7 +1,8 @@
 body {
   font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
+  background-color: #e6e3df;
   padding-top: 72px;
   -webkit-font-smoothing: antialiased;
   font-size: 1.125em;
@@ -9,9 +10,24 @@ body {
   line-height: 1.5em;
 }
 
-h1, h2, h3 {
-  color: #000;
+.container {
+    display: flex;
+    align-items: center;
 }
+
+.frame {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #e6e3df;
+    box-shadow: inset 2px 2px 5px rgba(154, 147, 140, 0.5), 1px 1px 5px rgba(255, 255, 255, 1);
+}
+
+h1, h2, h3 {
+    width: 100%;
+    color: #333;
+    text-align: center;
+}
+
 h1 {
   font-size: 2.5em
 }
