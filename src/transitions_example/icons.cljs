@@ -8,6 +8,7 @@
           :style {:display "inline-block"
                   :fill "#333"
                   :width "100px"
+                  :cursor "pointer"
                   :height "100px"
                   :user-select "none"
                   :flex-shrink 0}}]

@@ -30,7 +30,7 @@
   :cljsbuild {:builds {:app
                        {:source-paths ["src"]
                         :compiler
-                        {:main "transitions-example.dev"
+                        {:main "transitions-example.core"
                          :output-to "public/js/app.js"
                          :output-dir "public/js/out"
                          :asset-path   "js/out"

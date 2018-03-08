@@ -6,27 +6,36 @@
      [transitions-example.icons :refer [chevron-left chevron-right]]
      [reagent.core :as r]))
 
-(defonce state (r/atom {}))
-
 (def colors ["#0B486B" "#3B8686" "#79BD9A" "#A8DBA8" "#CFF09E"])
 
-;; -------------------------
-;; Views
+(defn on-click
+  [direction]
+
+  )
 
 (defn home-page []
-  [:div
-   [:h3.text
-    "Carousel example"]
-   [:div.container
-    [chevron-left]
-    [:div.frame]
-    [chevron-right]]])
-
-;; -------------------------
-;; Initialize app
+  (let [index (r/atom 0)]
+    (fn []
+      [:div
+       [:h3.text
+        "Carousel example"]
+       [:div.container
+        [:div {:on-click #(swap! index dec)}
+         [chevron-left]]
+        [:div.frame
+         (let [color (->> (count colors)
+                          (mod @index)
+                          (nth colors))]
+           [:div {:key color
+                  :class "slide"
+                  :style {:background-color color}}])]
+        [:div {:on-click #(swap! index inc)}
+         [chevron-right]]]])))
 
 (defn mount-root []
   (r/render [home-page] (.getElementById js/document "app")))
 
 (defn init! []
   (mount-root))
+
+(init!)
