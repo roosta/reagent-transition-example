@@ -13,42 +13,6 @@
 (def CSSTransition (r/adapt-react-class (.-CSSTransition js/ReactTransitionGroup)))
 (def colors ["#0B486B" "#3B8686" "#79BD9A" "#A8DBA8" "#CFF09E"])
 
-(def transitions
-  {:enter {:opacity 0.01
-           }
-   ;; :enter-right {:opacity 0.01
-   ;;               :transform "translate(-100%, 0)"}
-   :entered {:transform "translate(0, 0)"
-             :opacity 1}
-   :exit {:transform "translate(-100%, 0)"
-           :opacity 0}
-   ;; :leave-right {:transform "translate(100%, 0)"
-   ;;               :opacity 0}
-   :exited {:transform "translate(-100%, 0)"
-                       :opacity 0.01}
-   ;; :leave-active-right {:transform "translate(100%, 0)"
-   ;;                      :opacity 0.01}
-   })
-
-(defn slide
-  [state color]
-  [:div {:class "slide"
-         :style {:background-color color}}])
-
-(defn transition
-  [props]
-  (let [js-props (clj->js props)
-        this (r/current-component)
-        children (r/children this)
-        in-prop (.-in js-props)
-        color (.-color js-props)]
-    (into
-     [CSSTransition {:timeout 500
-                     :classNames "slide"
-                     :key color
-                     :in in-prop}]
-     children)))
-
 (defn carousel-child
   "wrapper class for children passed to carousel parent.
     Needed to add a style for children hence the second wrapper"
@@ -114,5 +78,3 @@
   (mount-root))
 
 (init!)
-#_[:div {:class "slide"
-       :style {:background-color color}}]
