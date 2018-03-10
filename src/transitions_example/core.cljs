@@ -13,38 +13,48 @@
 (def CSSTransition (r/adapt-react-class (.-CSSTransition js/ReactTransitionGroup)))
 (def colors ["#0B486B" "#3B8686" "#79BD9A" "#A8DBA8" "#CFF09E"])
 
+(def transitions
+  {:entering-left {:opacity 0.01
+                   :transform "translate(100%, 0)"}
+   :entering-right {:opacity 0.01
+                    :transform "translate(-100%, 0)"}
+   :entered-left {:transform "translate(0, 0)"
+                  :opacity 1}
+
+   :entered-right {:transform "translate(0, 0)"
+                   :opacity 1}
+   :exiting-left {:transform "translate(100%, 0)"
+                  :opacity 0}
+   :exiting-right {:transform "translate(-100%, 0)"
+                   :opacity 0.01}
+   :exited-left {:opacity 0}
+   :exited-right {:opacity 0}})
+
 (defn carousel-child
-  "wrapper class for children passed to carousel parent.
-    Needed to add a style for children hence the second wrapper"
-  [{:keys [color direction children in]}]
-  (into [CSSTransition {:key color
-                        :in in
-                        :timeout 500
-                        :classNames {:enter (str "enter-" (name direction))
-                                     :enterActive "enter-active"
-                                     :exit (str "exit-" (name direction))
-                                     :exitActive (str "exit-active-" (name direction))}
-                        :class "child"}]
-        children))
+  [{:keys [direction children in]}]
+   [Transition {:in in
+                :timeout 500
+                :unmountOnExit true}
+    (fn [state]
+      (let [transition (-> (str state "-")
+                           (str (name direction))
+                           keyword
+                           transitions)]
+        (r/as-element
+         (into [:div {:class "child"
+                      :style transition}]
+               children))))])
 
 (def reactified-child (r/reactify-component carousel-child))
 
 (defn carousel
-  [{:keys [direction color]}]
-  [TransitionGroup {:class "parent"}
-   (r/create-element reactified-child #js {:direction direction
-                                           :color color
-                                           :children (r/children (r/current-component))})]
-
-
-  #_(map (fn [child]
-           (let [k (or (:key (second child))
-                       (:key (meta child)))]
-             (assert k "You need to provide a key for child elements")
-             [carousel-child {:key k
-                              :direction direction}
-              child]))
-         (r/children (r/current-component))))
+  [{:keys [direction]}]
+  (let [children (r/children (r/current-component))
+        k (-> children first meta :key)]
+    [TransitionGroup {:class "parent"}
+     (r/create-element reactified-child #js {:direction direction
+                                             :key k
+                                             :children children})]))
 
 (defn home-page []
   (let [state (r/atom {:n 0
@@ -62,8 +72,8 @@
                          (mod (:n @state))
                          (nth colors))]
           [:div {:class "frame"}
-           [carousel {:direction (:dir @state)
-                      :color color}
+           [carousel {:direction (:dir @state)}
+            ^{:key color}
             [:div {:style {:background-color color}
                    :class "slide"}]]])
         [:div {:on-click #(swap! state (fn [{n :n}]
