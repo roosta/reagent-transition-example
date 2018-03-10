@@ -18,18 +18,117 @@ body {
 .frame {
     width: 100%;
     height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #e6e3df;
-    box-shadow: inset 2px 2px 5px rgba(154, 147, 140, 0.5), 1px 1px 5px rgba(255, 255, 255, 1);
+    overflow: hidden;
+    /* box-shadow: inset 2px 2px 5px rgba(154, 147, 140, 0.5), 1px 1px 5px rgba(255, 255, 255, 1); */
+}
+
+.child {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: transform, opacity 500ms ease-out;
+}
+
+.parent {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.enter-left {
+    opacity: 0.01;
+    transform: translate(100%, 0);
+}
+
+.enter-right {
+    opacity: 0.01;
+    transform: translate(-100%, 0);
+}
+
+.enter-up {
+    opacity: 0.01;
+    transform: translate(0, 100%);
+}
+
+.enter-down {
+    opacity: 0.01;
+    transform: translate(0, -100%);
+}
+
+.enter-active {
+    transform: translate(0, 0);
+    opacity 1;
+}
+
+.exit-left {
+    transform: translate(-100%, 0);
+    opacity 0;
+}
+
+.exit-up {
+    transform: translate(0, -100%);
+    opacity 0;
+}
+
+.exit-down {
+    transform: translate(0, 100%);
+    opacity 0;
+}
+
+.exit-right {
+    transform: translate(100%, 0);
+    opacity 0;
+}
+
+.exit-active-up {
+    transform: translate(0, -100%);
+    opacity 0.01;
+}
+
+.exit-active-down {
+    transform: translate(0, 100%);
+    opacity 0.01;
+}
+
+.exit-active-left {
+    transform: translate(-100%, 0);
+    opacity 0.01;
+}
+
+.exit-active-right {
+    transform: translate(100%, 0);
+    opacity 0.01;
 }
 
 .slide {
     width: 90%;
     box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.2),0px 3px 4px 0px rgba(0, 0, 0, 0.14),0px 3px 3px -2px rgba(0, 0, 0, 0.12);
+    transition: transform 500ms ease-in;
     height: 90%;
 }
+
+* .slide-enter { */
+/*     opacity: 0.01; */
+/*     transform: translate(100%, 0); */
+/* } */
+
+/* .slide-enter.slide-enter-active { */
+/*     transform: translate(0, 0); */
+/*     opacity: 1; */
+/* } */
+
+/* .slide-exit { */
+/*     transform: translate(-100%, 0); */
+/*     opacity: 1; */
+/* } */
+
+/* .slide-exit.slide-exit-active { */
+/*     opacity: 0.01; */
+/*     transform: translate(-100%, 0); */
+/* } */
 
 h1, h2, h3 {
     width: 100%;
