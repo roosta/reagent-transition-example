@@ -5,30 +5,32 @@
      [reagent.debug :refer [log]]
      [reagent.core :as r]))
 
-;; ["react-transition-group/TransitionGroup" :as TransitionGroup]
-;; ["react-transition-group/Transition" :as Transition]
-;; ["react-transition-group/CSSTransition" :as CSSTransition]
 (def Transition (r/adapt-react-class (.-Transition js/ReactTransitionGroup)))
 (def TransitionGroup (r/adapt-react-class (.-TransitionGroup js/ReactTransitionGroup)))
 (def CSSTransition (r/adapt-react-class (.-CSSTransition js/ReactTransitionGroup)))
-(def colors ["#0B486B" "#3B8686" "#79BD9A" "#A8DBA8" "#CFF09E"])
+
+(def colors ["#490A3D" "#BD1550" "#E97F02" "#F8CA00" "#8A9B0F"])
 
 (def transitions
   {:entering-left {:opacity 0.01
                    :transform "translate(100%, 0)"}
    :entering-right {:opacity 0.01
                     :transform "translate(-100%, 0)"}
+
    :entered-left {:transform "translate(0, 0)"
                   :opacity 1}
-
    :entered-right {:transform "translate(0, 0)"
                    :opacity 1}
-   :exiting-left {:transform "translate(100%, 0)"
-                  :opacity 0}
-   :exiting-right {:transform "translate(-100%, 0)"
+
+   :exiting-left {:transform "translate(-100%, 0)"
+                  :opacity 0.01}
+   :exiting-right {:transform "translate(100%, 0)"
                    :opacity 0.01}
-   :exited-left {:opacity 0}
-   :exited-right {:opacity 0}})
+
+   :exited-left {:opacity 0
+                 :transform "translate(-100%, 0)"}
+   :exited-right {:opacity 0
+                  :transform "translate(100%, 0)"}})
 
 (defn carousel-child
   [{:keys [direction children in]}]
@@ -62,7 +64,7 @@
     (fn []
       [:div
        [:h3.text
-        "Carousel example"]
+        (pr-str @state)]
        [:div.container
         [:div {:on-click #(swap! state (fn [{n :n}]
                                          {:n (dec n)
