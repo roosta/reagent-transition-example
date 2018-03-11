@@ -49,7 +49,10 @@
   [{:keys [direction]}]
   (let [children (r/children (r/current-component))
         k (-> children first meta :key)]
-    [TransitionGroup {:class "parent"
+    [TransitionGroup {:style {:position "relative"
+                              :height "100%"
+                              :width "100%"
+                              :overflow "hidden"}
 
                       ;; Apply reactive updates to a child as it is exiting
                       ;; Since the direction changes for exiting children as
