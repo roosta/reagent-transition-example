@@ -11,34 +11,22 @@
 
 (def colors ["#490A3D" "#BD1550" "#E97F02" "#F8CA00" "#8A9B0F"])
 
-(def transitions
-  {:entering-left {:opacity 0.01
-                   :transform "translate(100%, 0)"}
-   :entering-right {:opacity 0.01
-                    :transform "translate(-100%, 0)"}
-
-   :entered-left {:transform "translate(0, 0)"
-                  :opacity 1}
-   :entered-right {:transform "translate(0, 0)"
-                   :opacity 1}
-
-   :exiting-left {:transform "translate(-100%, 0)"
-                  :opacity 0.01}
-   :exiting-right {:transform "translate(100%, 0)"
-                   :opacity 0.01}
-
-   :exited-left {:opacity 0
-                 :transform "translate(-100%, 0)"}
-   :exited-right {:opacity 0
-                  :transform "translate(100%, 0)"}})
-
-(defn gimme
-  [direction]
-  (case direction
-    :left "translate(100%, 0)"
-    :right "translate(-100%, 0)"
-    :up "translate(0, 100%)"
-    :down "translate(0, -100%)"))
+(defn get-style
+  [state direction]
+  (case state
+    "entering" {:transform (direction {:left "translate(100%, 0)"
+                                       :right "translate(-100%, 0)"
+                                       :up "translate(0, 100%)"
+                                       :down "translate(0, -100%)"})
+                :opacity 0.01}
+    "entered" {:transform "translate(0, 0)"
+               :opacity 1}
+    "exiting" {:transform (direction {:left "translate(-100%, 0)"
+                                      :right "translate(100%, 0)"
+                                      :up "translate(0, -100%)"
+                                      :down "translate(0, 100%)"})
+               :opacity 0.01}
+    "exited" {:opacity 0}))
 
 (defn carousel-child
   [{:keys [direction children in]}]
@@ -46,14 +34,10 @@
                 :timeout 500
                 :unmountOnExit true}
     (fn [state]
-      (let [transition (-> (str state "-")
-                           (str (name direction))
-                           keyword
-                           transitions)]
         (r/as-element
          (into [:div {:class "child"
-                      :style transition}]
-               children))))])
+                      :style (get-style state direction)}]
+               children)))])
 
 (defn carousel
   [{:keys [direction]}]
