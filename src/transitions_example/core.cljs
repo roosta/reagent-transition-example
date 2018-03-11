@@ -55,19 +55,25 @@
                       :style transition}]
                children))))])
 
-(def reactified-child (r/reactify-component carousel-child))
-
 (defn carousel
   [{:keys [direction]}]
   (let [children (r/children (r/current-component))
         k (-> children first meta :key)]
     [TransitionGroup {:class "parent"
+
+                      ;; Apply reactive updates to a child as it is exiting
+                      ;; Since the direction changes for exiting children as
+                      ;; well, we need to reactivly update exiting children
                       :childFactory (fn [child]
                                       (js/React.cloneElement child #js {:direction direction}))}
-     (r/create-element reactified-child #js {:key k
-                                             :children children})]))
 
-(defn home-page []
+     ;; to access the passed props of transition group we need to create a react
+     ;; component from the carousel-child transition.
+     (let [child (r/reactify-component carousel-child)]
+       (r/create-element child #js {:key k
+                                    :children children}))]))
+
+(defn demo []
   (let [state (r/atom {:n 0
                        :dir :left})]
     (fn []
@@ -93,7 +99,7 @@
          [chevron-right]]]])))
 
 (defn mount-root []
-  (r/render [home-page] (.getElementById js/document "app")))
+  (r/render [demo] (.getElementById js/document "app")))
 
 (defn init! []
   (mount-root))
