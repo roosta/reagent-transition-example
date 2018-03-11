@@ -9,7 +9,7 @@
 (def TransitionGroup (r/adapt-react-class (.-TransitionGroup js/ReactTransitionGroup)))
 (def CSSTransition (r/adapt-react-class (.-CSSTransition js/ReactTransitionGroup)))
 
-(def colors ["#490A3D" "#BD1550" "#E97F02" "#F8CA00" "#8A9B0F"])
+(def colors ["#ef3e36" "#584b53" "#2e282a" "#9d5c63" "#4c5454"])
 
 (defn get-style
   [state direction]
