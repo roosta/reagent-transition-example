@@ -32,6 +32,14 @@
    :exited-right {:opacity 0
                   :transform "translate(100%, 0)"}})
 
+(defn gimme
+  [direction]
+  (case direction
+    :left "translate(100%, 0)"
+    :right "translate(-100%, 0)"
+    :up "translate(0, 100%)"
+    :down "translate(0, -100%)"))
+
 (defn carousel-child
   [{:keys [direction children in]}]
    [Transition {:in in
@@ -53,9 +61,10 @@
   [{:keys [direction]}]
   (let [children (r/children (r/current-component))
         k (-> children first meta :key)]
-    [TransitionGroup {:class "parent"}
-     (r/create-element reactified-child #js {:direction direction
-                                             :key k
+    [TransitionGroup {:class "parent"
+                      :childFactory (fn [child]
+                                      (js/React.cloneElement child #js {:direction direction}))}
+     (r/create-element reactified-child #js {:key k
                                              :children children})]))
 
 (defn home-page []
