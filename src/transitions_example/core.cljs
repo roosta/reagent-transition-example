@@ -1,7 +1,7 @@
 (ns transitions-example.core
     (:require
      [cljsjs.react-transition-group]
-     [transitions-example.icons :refer [chevron-left chevron-right]]
+     [transitions-example.icons :refer [chevron-left chevron-right chevron-up chevron-down]]
      [reagent.debug :refer [log]]
      [reagent.core :as r]))
 
@@ -46,17 +46,17 @@
                children)))])
 
 (defn carousel
-  [{:keys [direction]}]
+  [{:keys [direction class]}]
   (let [children (r/children (r/current-component))
         k (-> children first meta :key)]
-    [TransitionGroup {:style {:position "relative"
+    [TransitionGroup {:class class
+                      :style {:position "relative"
                               :height "100%"
                               :width "100%"
                               :overflow "hidden"}
 
-                      ;; Apply reactive updates to a child as it is exiting
-                      ;; Since the direction changes for exiting children as
-                      ;; well, we need to reactivly update exiting children
+                      ;; Since the direction should change for exiting children
+                      ;; as well, we need to reactivly update them
                       :childFactory (fn [child]
                                       (js/React.cloneElement child #js {:direction direction}))}
 
@@ -66,17 +66,25 @@
        (r/create-element child #js {:key k
                                     :children children}))]))
 
+(defn on-click
+  [direction]
+  (fn [{n :n}]
+    {:n (case direction
+          :left (dec n)
+          :down (dec n)
+          :up (inc n)
+          :right (inc n))
+     :dir direction}))
+
 (defn demo []
   (let [state (r/atom {:n 0
                        :dir :left})]
     (fn []
-      [:div
-       [:h3.text
-        (pr-str @state)]
-       [:div.container
-        [:div {:on-click #(swap! state (fn [{n :n}]
-                                         {:n (dec n)
-                                          :dir :left}))}
+      [:div.container
+       [:div {:on-click #(swap! state (on-click :up))}
+        [chevron-up]]
+       [:div.row
+        [:div {:on-click #(swap! state (on-click :left))}
          [chevron-left]]
         (let [color (->> (count colors)
                          (mod (:n @state))
@@ -86,10 +94,10 @@
             ^{:key color}
             [:div {:style {:background-color color}
                    :class "slide"}]]])
-        [:div {:on-click #(swap! state (fn [{n :n}]
-                                         {:n (inc n)
-                                          :dir :right}))}
-         [chevron-right]]]])))
+        [:div {:on-click #(swap! state (on-click :right))}
+         [chevron-right]]]
+       [:div {:on-click #(swap! state (on-click :down))}
+        [chevron-down]]])))
 
 (defn mount-root []
   (r/render [demo] (.getElementById js/document "app")))
