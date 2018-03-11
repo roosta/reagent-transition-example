@@ -13,20 +13,27 @@
 
 (defn get-style
   [state direction]
-  (case state
-    "entering" {:transform (direction {:left "translate(100%, 0)"
-                                       :right "translate(-100%, 0)"
-                                       :up "translate(0, 100%)"
-                                       :down "translate(0, -100%)"})
+  (merge
+   (case state
+     "entering" {:transform (direction {:left "translate(100%, 0)"
+                                        :right "translate(-100%, 0)"
+                                        :up "translate(0, 100%)"
+                                        :down "translate(0, -100%)"})
+                 :opacity 0.01}
+     "entered" {:transform "translate(0, 0)"
+                :opacity 1}
+     "exiting" {:transform (direction {:left "translate(-100%, 0)"
+                                       :right "translate(100%, 0)"
+                                       :up "translate(0, -100%)"
+                                       :down "translate(0, 100%)"})
                 :opacity 0.01}
-    "entered" {:transform "translate(0, 0)"
-               :opacity 1}
-    "exiting" {:transform (direction {:left "translate(-100%, 0)"
-                                      :right "translate(100%, 0)"
-                                      :up "translate(0, -100%)"
-                                      :down "translate(0, 100%)"})
-               :opacity 0.01}
-    "exited" {:opacity 0}))
+     "exited" {:opacity 0})
+   {:left 0
+    :top 0
+    :width "100%"
+    :height "100%"
+    :position "absolute"
+    :transition "transform 500ms ease-in-out, opacity 500ms ease-in-out"}))
 
 (defn carousel-child
   [{:keys [direction children in]}]
@@ -35,8 +42,7 @@
                 :unmountOnExit true}
     (fn [state]
         (r/as-element
-         (into [:div {:class "child"
-                      :style (get-style state direction)}]
+         (into [:div {:style (get-style state direction)}]
                children)))])
 
 (defn carousel
