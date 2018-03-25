@@ -1,3 +1,13 @@
+### Description
+
+An problem I've had multiple times when creating
+[Reagent](https://github.com/reagent-project/reagent) apps is that I'd like to
+transition something in and out depending on their mount status. A router for
+example, that can transition pages in and out, or an image slideshow where you'd
+simply change the source of the image. Ever since
+[react-transition-group](https://github.com/reactjs/react-transition-group)
+updated to API v2 all my existing solutions for this problem failed. I made this
+example for reference using the new API.
 
 ### Development mode
 
