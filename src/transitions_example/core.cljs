@@ -1,7 +1,7 @@
 (ns transitions-example.core
     (:require
      [cljsjs.react-transition-group]
-     [transitions-example.icons :refer [chevron-left chevron-right chevron-up chevron-down]]
+     [transitions-example.icons :refer [star chevron-left chevron-right chevron-up chevron-down]]
      [reagent.debug :refer [log]]
      [reagent.core :as r]))
 
@@ -76,29 +76,40 @@
           :right (inc n))
      :dir direction}))
 
+
 (defn demo []
   (let [state (r/atom {:n 0
-                       :dir :left})]
+                       :dir :left})
+        state-2 (r/atom false)]
     (fn []
-      [:div.container
-       [:div {:on-click #(swap! state (on-click :up))}
-        [chevron-up]]
-       [:div.row
-        [:div {:on-click #(swap! state (on-click :left))}
-         [chevron-left]]
-        (let [color (->> (count colors)
-                         (mod (:n @state))
-                         (nth colors))]
-          [:div {:class "frame"}
-           [carousel {:direction (:dir @state)}
-            ^{:key color}
-            [:div {:style {:background-color color}
-                   :class "slide"}]]])
-        [:div {:on-click #(swap! state (on-click :right))}
-         [chevron-right]]]
-       [:div {:on-click #(swap! state (on-click :down))}
-        [chevron-down]]])))
+      [:div
+       [:div.container
+        [:div {:on-click #(swap! state (on-click :up))}
+         [chevron-up]]
+        [:div.row
+         [:div {:on-click #(swap! state (on-click :left))}
+          [chevron-left]]
+         (let [color (->> (count colors)
+                          (mod (:n @state))
+                          (nth colors))]
+           [:div {:class "frame"}
+            [carousel {:direction (:dir @state)}
+             ^{:key color}
+             [:div {:style {:background-color color}
+                    :class "slide"}]]])
+         [:div {:on-click #(swap! state (on-click :right))}
+          [chevron-right]]]
+        [:div {:on-click #(swap! state (on-click :down))}
+         [chevron-down]]]
 
+       [:div {:style {:display "flex"
+                      :justify-content "center"}}
+        [:button {:on-click #(swap! state-2 not)}
+         "Toggle star"]
+        [CSSTransition {:in @state-2
+                        :timeout 300
+                        :classNames "star"}
+         [star {:class "star"}]]]])))
 (defn mount-root []
   (r/render [demo] (.getElementById js/document "app")))
 

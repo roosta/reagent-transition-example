@@ -2,9 +2,10 @@
   (:require [reagent.core :as r]))
 
 (defn svg-icon
-  [{:keys [viewbox]}]
+  [{:keys [viewbox class]}]
   (into
    [:svg {:view-box viewbox
+          :class class
           :style {:display "inline-block"
                   :fill "#333"
                   :width "100px"
@@ -29,3 +30,8 @@
 (defn chevron-up []
   [svg-icon {:viewbox "0 0 24 24"}
    [:path {:d "m16.59 15.705 1.41-1.41-6-6-6 6 1.41 1.41 4.59-4.58z"}]])
+
+(defn star [{:keys [class]}]
+  [svg-icon {:viewbox "0 0 24 24"
+             :class class}
+   [:path {:d "M9 11.3l3.71 2.7-1.42-4.36L15 7h-4.55L9 2.5 7.55 7H3l3.71 2.64L5.29 14z"}]])

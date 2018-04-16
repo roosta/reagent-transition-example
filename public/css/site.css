@@ -66,3 +66,35 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.star {
+    display: inline-block;
+    opacity: 0;
+    margin-left: 0.5rem;
+    transform: scale(1.25);
+}
+
+.star-enter {
+    opacity: 0.01;
+}
+
+.star-enter-active {
+    opacity: 1;
+    transition: all 300ms ease-out;
+}
+
+.star-enter-done {
+    opacity: 1;
+}
+
+.star-exit-done {
+    opacity: 0;
+}
+
+.star-exit {
+    opacity: 1;
+}
+.star-exit-active {
+    opacity: 0;
+    transition: all 300ms ease-in;
+}
