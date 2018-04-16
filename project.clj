@@ -7,7 +7,7 @@
                  [org.clojure/clojurescript "1.9.946"]
                  [venantius/accountant "0.2.4"]
                  [secretary "1.2.3"]
-                 [cljsjs/react-transition-group "2.2.1-1"]
+                 [cljsjs/react-transition-group "2.3.0-0"]
                  [reagent "0.7.0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
