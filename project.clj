@@ -25,19 +25,21 @@
              :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
              :css-dirs ["public/css"]}
 
-  :cljsbuild {:builds {:app
-                       {:source-paths ["src"]
-                        :compiler
-                        {:main "transitions-example.core"
-                         :output-to "public/js/app.js"
-                         :preloads [devtools.preload]
-                         :output-dir "public/js/out"
-                         :asset-path   "js/out"
-                         :source-map true
-                         :optimizations :none
-                         :pretty-print  true}
-                        :figwheel
-                        {:on-jsload "transitions-example.core/mount-root"}}}}
+  :cljsbuild {:builds {:app {:source-paths ["src"]
+                             :compiler {:main "transitions-example.core"
+                                        :output-to "public/js/app.js"
+                                        :preloads [devtools.preload]
+                                        :output-dir "public/js/out"
+                                        :asset-path   "js/out"
+                                        :source-map true
+                                        :optimizations :none
+                                        :pretty-print  true}
+                             :figwheel {:on-jsload "transitions-example.core/mount-root"}}
+                       :min {:source-paths ["src"]
+                             :compiler {:output-to "public/js/app.js"
+                                        :output-dir "public/js"
+                                        :optimizations :advanced
+                                        :pretty-print  false}}}}
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.10"]
                                   [figwheel-sidecar "0.5.19"]
