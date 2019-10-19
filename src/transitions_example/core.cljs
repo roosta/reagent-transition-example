@@ -11,31 +11,6 @@
 
 (def colors ["#ef3e36" "#584b53" "#2e282a" "#9d5c63" "#4c5454"])
 
-(defn get-style
-  [state direction]
-  (merge
-   (case state
-     "entering" {:transform (direction {:left "translate(100%, 0)"
-                                        :right "translate(-100%, 0)"
-                                        :up "translate(0, 100%)"
-                                        :down "translate(0, -100%)"})
-                 :opacity 0.01}
-     "entered" {:transform "translate(0, 0)"
-                :opacity 1}
-     "exiting" {:transform (direction {:left "translate(-100%, 0)"
-                                       :right "translate(100%, 0)"
-                                       :up "translate(0, -100%)"
-                                       :down "translate(0, 100%)"})
-                :opacity 0.01}
-     "exited" {:opacity 0})
-   {:left 0
-    :top 0
-    :width "100%"
-    :height "100%"
-    :position "absolute"
-    :transition "transform 500ms ease-in-out, opacity 500ms ease-in-out"}))
-
-
 (defn carousel-child
   [{:keys [direction children in]}]
   [CSSTransition {:in in
@@ -53,11 +28,7 @@
   [{:keys [direction class]}]
   (let [children (r/children (r/current-component))
         k (-> children first meta :key)]
-    [TransitionGroup {:class class
-                      :style {:position "relative"
-                              :height "100%"
-                              :width "100%"
-                              :overflow "hidden"}
+    [TransitionGroup {:class ["transition-group" class]
 
                       ;; Since the direction should change for exiting children
                       ;; as well, we need to reactivly update them
