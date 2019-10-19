@@ -3,15 +3,15 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.9.0"]
-                 [org.clojure/clojurescript "1.9.946"]
+  :dependencies [[org.clojure/clojure "1.10.1"]
+                 [org.clojure/clojurescript "1.10.520"]
                  [venantius/accountant "0.2.4"]
                  [secretary "1.2.3"]
-                 [cljsjs/react-transition-group "2.3.0-0"]
-                 [reagent "0.7.0"]]
+                 [cljsjs/react-transition-group "4.3.0-0"]
+                 [reagent "0.8.1"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
-            [lein-figwheel "0.5.15"]]
+            [lein-figwheel "0.5.19"]]
 
   :min-lein-version "2.5.0"
 
@@ -41,7 +41,7 @@
                         :figwheel
                         {:on-jsload "transitions-example.core/mount-root"}}}}
 
-  :profiles {:dev {:dependencies [[binaryage/devtools "0.9.9"]
-                                  [figwheel-sidecar "0.5.15"]
+  :profiles {:dev {:dependencies [[binaryage/devtools "0.9.10"]
+                                  [figwheel-sidecar "0.5.19"]
                                   [org.clojure/tools.nrepl "0.2.13"]
                                   [com.cemerick/piggieback "0.2.2"]]}})
