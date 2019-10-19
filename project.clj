@@ -5,8 +5,6 @@
 
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/clojurescript "1.10.520"]
-                 [venantius/accountant "0.2.4"]
-                 [secretary "1.2.3"]
                  [cljsjs/react-transition-group "4.3.0-0"]
                  [reagent "0.8.1"]]
 
