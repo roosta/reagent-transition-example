@@ -35,15 +35,19 @@
     :position "absolute"
     :transition "transform 500ms ease-in-out, opacity 500ms ease-in-out"}))
 
+
 (defn carousel-child
   [{:keys [direction children in]}]
-   [Transition {:in in
-                :timeout 500
-                :unmountOnExit true}
-    (fn [state]
-        (r/as-element
-         (into [:div {:style (get-style state direction)}]
-               children)))])
+  [CSSTransition {:in in
+                  :timeout 500
+                  :class-names {:enter (str "slide-enter-" (name direction))
+                                :enter-active "slide-enter-active"
+                                :exit "slide-exit"
+                                :exit-active (str "slide-exit-active-" (name direction))
+                                :exit-done "slide-exit-done"}}
+   (fn [state]
+     (r/as-element
+      (into [:div {:class "slide-base"}] children)))])
 
 (defn carousel
   [{:keys [direction class]}]
@@ -58,12 +62,13 @@
                       ;; Since the direction should change for exiting children
                       ;; as well, we need to reactivly update them
                       :childFactory (fn [child]
-                                      (js/React.cloneElement child #js {:direction direction}))}
+                                      (js/React.cloneElement child #js { :direction direction}))}
 
      ;; to access the passed props of transition group we need to create a react
      ;; component from the carousel-child transition.
      (let [child (r/reactify-component carousel-child)]
        (r/create-element child #js {:key k
+                                    :direction direction
                                     :children children}))]))
 
 (defn on-click
@@ -76,11 +81,8 @@
           :right (inc n))
      :dir direction}))
 
-
 (defn demo []
-  (let [state (r/atom {:n 0
-                       :dir :left})
-        state-2 (r/atom false)]
+  (let [state (r/atom {:n 0 :dir :left})]
     (fn []
       [:div
        [:div.container
@@ -100,16 +102,8 @@
          [:div {:on-click #(swap! state (on-click :right))}
           [chevron-right]]]
         [:div {:on-click #(swap! state (on-click :down))}
-         [chevron-down]]]
+         [chevron-down]]]])))
 
-       [:div {:style {:display "flex"
-                      :justify-content "center"}}
-        [:button {:on-click #(swap! state-2 not)}
-         "Toggle star"]
-        [CSSTransition {:in @state-2
-                        :timeout 300
-                        :classNames "star"}
-         [star {:class "star"}]]]])))
 (defn mount-root []
   (r/render [demo] (.getElementById js/document "app")))
 
