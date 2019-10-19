@@ -69,10 +69,6 @@ body {
   transform: translate(0, 0);
 }
 
-.slide-exit-done {
-    display: none;
-}
-
 .slide-exit {
   transform: translate(0, 0);
 }
@@ -89,4 +85,8 @@ body {
 
 .slide-exit-active-down {
   transform: translate(0, 100%);
+}
+
+.slide-exit-done {
+    display: none;
 }
