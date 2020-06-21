@@ -1,13 +1,15 @@
 (ns transitions-example.core
-    (:require
-     [cljsjs.react-transition-group]
-     [transitions-example.icons :refer [star chevron-left chevron-right chevron-up chevron-down]]
-     [reagent.debug :refer [log]]
-     [reagent.core :as r]))
+  (:require
+   [transitions-example.icons :refer [star chevron-left chevron-right chevron-up chevron-down]]
+   ["react" :as react]
+   ["react-transition-group" :default ReactTransitionGroup]
+   [reagent.debug :refer [log]]
+   [reagent.core :as r]
+   [reagent.dom :as rd]))
 
-(def Transition (r/adapt-react-class (.-Transition js/ReactTransitionGroup)))
-(def TransitionGroup (r/adapt-react-class (.-TransitionGroup js/ReactTransitionGroup)))
-(def CSSTransition (r/adapt-react-class (.-CSSTransition js/ReactTransitionGroup)))
+(def Transition (r/adapt-react-class (.-Transition ReactTransitionGroup)))
+(def TransitionGroup (r/adapt-react-class (.-TransitionGroup ReactTransitionGroup)))
+(def CSSTransition (r/adapt-react-class (.-CSSTransition ReactTransitionGroup)))
 
 (def colors ["#ef3e36" "#584b53" "#2e282a" "#9d5c63" "#4c5454"])
 
@@ -33,7 +35,7 @@
                       ;; Since the direction should change for exiting children
                       ;; as well, we need to reactivly update them
                       :childFactory (fn [child]
-                                      (js/React.cloneElement child #js { :direction direction}))}
+                                      (react/cloneElement child #js { :direction direction}))}
 
      ;; to access the passed props of transition group we need to create a react
      ;; component from the carousel-child transition.
@@ -76,7 +78,7 @@
          [chevron-down]]]])))
 
 (defn mount-root []
-  (r/render [demo] (.getElementById js/document "app")))
+  (rd/render [demo] (.getElementById js/document "app")))
 
 (defn init! []
   (mount-root))

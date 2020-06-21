@@ -14,3 +14,12 @@ pom.xml.asc
 /.repl
 *.log
 /.env
+
+/.cpcache/
+/.rebel_readline_history
+/.shadow-cljs/
+/node_modules/
+/dist/
+.DS_Store
+.*.icloud
+.#*

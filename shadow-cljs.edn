@@ -1,0 +1,24 @@
+{:deps         true
+
+ :nrepl        {:port 3333}
+
+ :builds
+ {:app {:target :browser
+        :output-dir "public/js/compiled"
+        :asset-path "/public"
+
+        :modules
+        {:main {:entries [transitions-example.core]
+                :preloads   [devtools.preload]}}
+
+        :devtools
+        {:after-load transitions-example.core/mount-root
+         :http-root  "public"
+         :http-port  3000}
+
+        :dev {:compiler-options
+              {:infer-externs    :auto}}
+
+        :release {:output-dir "dist/js/compiled"
+                  :compiler-options {:infer-extern :auto}}}}}
+
